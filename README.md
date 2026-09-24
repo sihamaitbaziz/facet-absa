@@ -17,23 +17,7 @@ The demo runs entirely in the browser. The model is quantized to int8 and execut
 - **Counterfactual search.** A greedy search (at most 3 edits: delete a word, add "not", or swap in an antonym) for the smallest change that flips the label.
 - **Calibrated confidence.** Probabilities are rescaled with a temperature fitted on validation data. The demo shows the calibrated confidence next to the normalized entropy.
 
-## Architecture
 
-```mermaid
-flowchart LR
-    A[SemEval-2014 Task 4<br/>restaurants + laptops] --> B[Build aspect-sentence pairs<br/>5,822 pairs, split by sentence]
-    B --> C[Fine-tune on Kaggle GPU<br/>DeBERTa-v3-base / RoBERTa-base, fp16]
-    C --> D[Evaluate on held-out test<br/>P / R / F1, confusion matrix]
-    C --> E[Temperature scaling<br/>fitted on validation]
-    C --> F[SHAP token importance<br/>notebook]
-    C --> G[Hugging Face Hub]
-    G --> H[ONNX export + int8 quantization<br/>RoBERTa-base]
-    H --> I[Static Space<br/>transformers.js in the browser]
-    E --> I
-    I --> J[Aspect scores + confidence + entropy]
-    I --> K[Word-removal explanation]
-    I --> L[Counterfactual search]
-```
 
 ## Results
 
@@ -68,8 +52,6 @@ The notebook uses **SHAP** with a text masker to produce token-level heatmaps fo
 
 - The aspect must be given (or matched against a short keyword list). The model classifies sentiment toward an aspect, it does not extract aspects.
 - Training data covers restaurants and laptops only. Other domains are untested.
-- The counterfactual search uses a small hand-written antonym list, so it can only make edits from that list, deletion, or negation.
-- Accuracy differences of about one point on a 588-pair test set are within noise.
 
 ## Reproduce
 
@@ -77,14 +59,7 @@ The notebook uses **SHAP** with a text masker to produce token-level heatmaps fo
 2. Run `notebooks/02_roberta_onnx_export.ipynb` to train RoBERTa-base, export to ONNX, quantize, verify accuracy, and push to the Hub.
 3. Upload `space/index.html` to a Hugging Face Space with the Static SDK.
 
-## Repository layout
 
-```
-notebooks/   training, evaluation, calibration, SHAP, ONNX export
-space/       index.html for the Static Space
-results/     classification report, calibration files, confusion matrix
-assets/      screenshots of the demo
-```
 
 ## Data and credits
 
