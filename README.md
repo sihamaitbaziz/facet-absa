@@ -9,6 +9,7 @@ A review such as *"The food was great but the service was painfully slow"* is po
 The demo runs entirely in the browser. The model is quantized to int8 and executed client-side with `transformers.js`, so the text you type never leaves your machine and the demo needs no server.
 
 **Live demo:** https://huggingface.co/spaces/sy12ssss/facet-absa
+![Demo Screenshot](./demo/positive example.png)
 
 ## Features
 
